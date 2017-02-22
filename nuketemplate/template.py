@@ -14,6 +14,20 @@ class AbstractTemplate(object):
         self.nodes = nodes
         self.template = []
 
+    def _any(self, iterable, attribute):
+        """
+        Custom Jinja 2 filter, return :func:`any()` on a list filtered
+        by ``attribute``.
+
+        :param iterable: Iterable
+        :type iterable: iter
+        :param attribute: Filter attribute
+        :type attribute: str
+        :return: Result of any()
+        :rtype: bool
+        """
+        return bool(any([item for item in iterable if item[attribute]]))
+
     def _basename(self, fp):
         """
         Custom Jinja 2 filter returning a filename's basename.
@@ -49,6 +63,7 @@ class AbstractTemplate(object):
         :rtype: jinja2.Environment
         """
         env = jinja2.Environment(loader=self._get_loader(folder))
+        env.filters['any'] = self._any
         env.filters['basename'] = self._basename
         return env
 

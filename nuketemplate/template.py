@@ -39,6 +39,27 @@ class AbstractTemplate(object):
         """
         return os.path.basename(fp)
 
+    def _filter_sort(self, iterable, attribute, value, sort_key):
+        """
+        Custom Jinja 2 filter, return an iterable that is filtered using an
+        ``attribute`` and ``value`` and sorted using ``sort_key``.
+
+        :param iterable: Iterable
+        :type iterable: iter
+        :param attribute: Filter attribute
+        :type attribute: str
+        :param value: Filter value
+        :type value: str, int, float
+        :param sort_key: Sort key
+        :type sort_key: str, int, float
+        :return: Filtered and sorted iterable
+        :rtype: iter
+        """
+        filtered_iterable = [item for item in iterable
+                             if item[attribute] == value]
+        return [item for item in sorted(filtered_iterable,
+                                        key=lambda x: x[sort_key])]
+
     def _get_loader(self, folder):
         """
         Given a ``folder`` containing Jinja2 templates, return a Jinja2 loader
@@ -65,6 +86,7 @@ class AbstractTemplate(object):
         env = jinja2.Environment(loader=self._get_loader(folder))
         env.filters['any'] = self._any
         env.filters['basename'] = self._basename
+        env.filters['filter_sort'] = self._filter_sort
         return env
 
     def _get_attrs(self):

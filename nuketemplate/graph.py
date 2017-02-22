@@ -10,16 +10,22 @@ def is_node_in_nx_graph(instance, attribute, value):
             attribute.name.title()))
 
 
-@attr.s
+@attr.s(repr=False)
 class GenericNode(object):
     name = attr.ib()
 
+    def __repr__(self):
+        return '<GenericNode: {0}>'.format(self.name)
 
-@attr.s
+
+@attr.s(repr=False)
 class NukeNode(GenericNode):
     _type = attr.ib(repr=False)
     _attr = attr.ib(repr=False, hash=False)
     _id = attr.ib(repr=False, hash=False)
+
+    def __repr__(self):
+        return '<NukeNode: {0}>'.format(self.name)
 
 
 @attr.s

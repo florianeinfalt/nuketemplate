@@ -1,0 +1,1 @@
+# nuketemplate py.test configuration

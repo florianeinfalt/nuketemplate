@@ -30,7 +30,7 @@ class AbstractTemplate(object):
 
     def _basename(self, fp):
         """
-        Custom Jinja 2 filter returning a filename's basename.
+        Custom Jinja 2 filter, return a filename's base name.
 
         :param fp: Filename
         :type fp: str

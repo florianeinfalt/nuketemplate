@@ -8,6 +8,17 @@ from .exceptions import AbstractTemplateError
 
 
 class AbstractTemplate(object):
+    """
+    Template class, automates Jinja2 loader and environment generation,
+    wraps Jinja2 rendering and JSON encoding.
+
+    :param root: Template root location
+    :type root: str
+    :param nodes: Node templates' folder name, (default: ``nodes``)
+    :type nodes: str
+    :param nodes: Attribute templates' folder name, (default: ``attrs``)
+    :type nodes: str
+    """
     def __init__(self, root=os.getcwd(), nodes='nodes', attrs='attrs'):
         self.root = root
         self.attrs = attrs

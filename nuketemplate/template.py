@@ -103,7 +103,7 @@ class AbstractTemplate(object):
         try:
             return json.loads(render)
         except ValueError as e:
-            print 'JSON error: {0}'.format(e)
+            print 'JSON error: {0}\n{1}'.format(e, render)
             raise AbstractTemplateError(e)
         except jinja2.exceptions.UndefinedError as e:
             print 'Attribute error: {0}'.format(e)
@@ -123,7 +123,7 @@ class AbstractTemplate(object):
         try:
             self.template = json.loads(render)
         except ValueError as e:
-            print 'JSON error: {0}'.format(e)
+            print 'JSON error: {0}\n{1}'.format(e, render)
             raise AbstractTemplateError(e)
         except jinja2.exceptions.UndefinedError as e:
             print 'Attribute error: {0}'.format(e)

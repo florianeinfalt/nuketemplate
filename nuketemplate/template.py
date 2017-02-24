@@ -113,6 +113,9 @@ class AbstractTemplate(object):
         render = template.render(attr_templates=attr_templates)
         try:
             return json.loads(render)
+        except KeyError as e:
+            print 'Invalid reference key: {0}'.format(e)
+            raise AbstractTemplateError(e)
         except ValueError as e:
             print 'JSON error: {0}\n{1}'.format(e, render)
             raise AbstractTemplateError(e)
@@ -122,7 +125,8 @@ class AbstractTemplate(object):
 
     def render(self, template='main.j2', **kwargs):
         """
-        Compile the main node ``template`` and store as an instance attribute
+        Compile the main node ``template`` to JSON and store as an instance
+        attribute
 
         :param template: Main template name
         :type template: str
@@ -133,6 +137,9 @@ class AbstractTemplate(object):
         render = template.render(attrs=self._get_attrs(), **kwargs)
         try:
             self.template = json.loads(render)
+        except KeyError as e:
+            print 'Invalid reference key: {0}'.format(e)
+            raise AbstractTemplateError(e)
         except ValueError as e:
             print 'JSON error: {0}\n{1}'.format(e, render)
             raise AbstractTemplateError(e)

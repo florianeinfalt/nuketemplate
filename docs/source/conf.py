@@ -23,7 +23,7 @@
 import os
 import sys
 import sphinx_rtd_theme
-os.environ['DOCS_CONTEXT'] = '1'
+os.environ['NON_PRODUCTION_CONTEXT'] = '1'
 
 cwd = os.getcwd()
 project_root = os.path.dirname(cwd)

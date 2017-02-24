@@ -4,9 +4,8 @@ import sys
 import logging
 import platform
 
-TESTING = False
 try:
-    TESTING = os.environ['NON_PRODUCTION_CONTEXT']
+    os.environ['NON_PRODUCTION_CONTEXT']
 except:
     if platform.system() == 'Darwin':
         application = r'Nuke\d+\.\d+v\d+.app'

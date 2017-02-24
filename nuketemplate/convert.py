@@ -1,10 +1,24 @@
+import subprocess
 import networkx as nx
 
 from .graph import AbstractGraph
 from .graph import NukeNode
+from .exceptions import AbstractTemplateError
+
+from nuketemplate import logger
 
 
 class AbstractTemplateConverter(object):
+    """
+    Template to Graph Converter
+
+    :param template: JSON Template
+    :type template: list, dict
+    :param start: Start characters, default: ``>>``
+    :type start: str
+    :param end: End characters, default: ``<<``
+    :type end: str
+    """
     def __init__(self, template, start='>>', end='<<'):
         self.start = start
         self.end = end
@@ -13,32 +27,54 @@ class AbstractTemplateConverter(object):
         self.result = None
 
     def _convert_template_to_graph(self, template):
-        subgraph = AbstractGraph(nx_graph=nx.DiGraph())
-        self._add_nodes(subgraph, template[self.start], template)
-        self.subgraphs.append(subgraph)
+        """
+        Private conversion helper function, create an
+        :class:`~nx.classes.graph.Graph` and start
+        :func:`nuketemplate.convert.AbstractTemplateConverter._add_nodes()`.
 
-    def _add_nodes(self, subgraph, node, template):
+        :param template: JSON Template
+        :type template: list, dict
+        """
+        graph = AbstractGraph(nx_graph=nx.DiGraph())
+        self._add_nodes(graph, template[self.start], template)
+        self.subgraphs.append(graph)
+
+    def _add_nodes(self, graph, node, template):
+        """
+        Private conversion helper function, recursively add nodes and edges to
+        ``graph``.
+
+        :param graph: NetworkX graph
+        :type graph: :class:`~nx.classes.graph.Graph`
+        :param node: Start node
+        :type node: str
+        :param template: JSON template
+        :type template: list, dict
+        """
         nuke_node = NukeNode(name=node,
-                             attr=template[node]['attr'],
-                             type=template[node]['type'],
+                             attr=template[node].get('attr', {}),
+                             type=template[node].get('type', {}),
                              id={})
-        subgraph.nx_graph.add_node(nuke_node)
-        if not subgraph.start:
-            subgraph.start = nuke_node
+        graph.nx_graph.add_node(nuke_node)
+        if not graph.start:
+            graph.start = nuke_node
         for input_idx, input in enumerate(template[node]['inputs']):
             if input != self.end:
-                subgraph.nx_graph.add_edge(nuke_node,
-                                           self._add_nodes(subgraph,
-                                                           input,
-                                                           template),
-                                           input=input_idx)
+                graph.nx_graph.add_edge(nuke_node,
+                                        self._add_nodes(graph,
+                                                        input,
+                                                        template),
+                                        input=input_idx)
             else:
-                subgraph.end = nuke_node
-                subgraph.end_slot = input_idx
+                graph.end = nuke_node
+                graph.end_slot = input_idx
         return nuke_node
 
     def _combine_graphs(self):
-        self.subgraphs = self.subgraphs[::-1]
+        """
+        Combine graphs if the template consists of multiple sub graphs.
+        """
+        self.subgraphs.reverse()
         self.result = self.subgraphs.pop()
         while self.subgraphs:
             subgraph = self.subgraphs.pop()
@@ -52,8 +88,39 @@ class AbstractTemplateConverter(object):
                                         end=subgraph.end)
 
     def convert(self):
-        for sub_template in self.template:
-            self._convert_template_to_graph(sub_template)
-        print len(self.subgraphs),\
-              [sg.number_of_nodes() for sg in self.subgraphs]
+        """
+        Convert the JSON template into an
+        :class:`~nuketemplate.graph.AbstractGraph`, if the template consists
+        of multiple sub graphs, convert and combine otherwise convert in one
+        pass.
+        """
+        if isinstance(self.template, list):
+            for sub_template in self.template:
+                self._convert_template_to_graph(sub_template)
+            logger.info('Number of sub graphs: {}'.format(len(self.subgraphs)))
+            logger.info('Number of nodes per sub graph: {}'.format(
+                [sg.number_of_nodes() for sg in self.subgraphs]))
+        elif isinstance(self.template, dict):
+            self._convert_template_to_graph(self.template)
+        else:
+            AbstractTemplateError('Template must be either list or dict')
         self._combine_graphs()
+
+    def to_dot(self, filename='graph.dot'):
+        """
+        Save the converted graph to a dot file at location ``filename``
+
+        :param filename: Filename
+        :type filename: str
+        """
+        nx.drawing.nx_pydot.write_dot(self.result.nx_graph, filename)
+
+    def to_png(self, filename='graph.png'):
+        """
+        Save the converted graph to a png file at location ``filename``
+
+        :param filename: Filename
+        :type filename: str
+        """
+        self.to_dot()
+        subprocess.call(['dot', '-Tpng', 'graph.dot', '-o', 'graph.png'])

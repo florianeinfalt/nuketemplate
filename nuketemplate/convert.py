@@ -101,9 +101,11 @@ class AbstractTemplateConverter(object):
             self._convert_template_to_graph(self.template)
         else:
             AbstractTemplateError('Template must be either list or dict')
+        num_nodes_p_subgraph = [sg.number_of_nodes() for sg in self.subgraphs]
         logger.info('Number of sub graphs: {}'.format(len(self.subgraphs)))
-        logger.info('Number of nodes per sub graph: {}'.format(
-            [sg.number_of_nodes() for sg in self.subgraphs]))
+        logger.info('Number of nodes per sub graph: {}'.format(num_nodes_p_subgraph))
+        logger.info('Total number of nodes: {}'.format(
+            sum(num_nodes_p_subgraph)))
         self._combine_graphs()
 
     def to_dot(self, filename='graph.dot'):

@@ -1,5 +1,5 @@
 nuketemplate
-===============================
+============
 
 .. image:: https://img.shields.io/pypi/l/nuketemplate.svg
     :target: https://pypi.python.org/pypi/nuketemplate
@@ -13,3 +13,22 @@ nuketemplate
     :target: https://readthedocs.org/projects/nuketemplate/?badge=latest
 
 A toolkit to build Nuke scripts with flexible templates, based on Jinja 2
+
+`Full Documentation`_
+
+Installation
+------------
+
+To install ``nuketemplate``, type:
+
+.. code-block:: bash
+
+    $ pip install nuketemplate
+
+Open Nuke's ``init.py`` file and add:
+
+.. code-block:: python
+
+    nuke.pluginAddPath('/path/to/your/local/python/site-packages')
+
+.. _Full Documentation: http://nuketemplate.readthedocs.io/en/latest/

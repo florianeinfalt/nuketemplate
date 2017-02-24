@@ -7,10 +7,8 @@ To install ``nuketemplate``, type:
 
     $ pip install nuketemplate
 
-Open Nuke's ``init.py`` file and add: ::
+Open Nuke's ``init.py`` file and add:
 
 .. code-block:: python
 
     nuke.pluginAddPath('/path/to/your/local/python/site-packages')
-
-Done.

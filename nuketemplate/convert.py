@@ -97,13 +97,13 @@ class AbstractTemplateConverter(object):
         if isinstance(self.template, list):
             for sub_template in self.template:
                 self._convert_template_to_graph(sub_template)
-            logger.info('Number of sub graphs: {}'.format(len(self.subgraphs)))
-            logger.info('Number of nodes per sub graph: {}'.format(
-                [sg.number_of_nodes() for sg in self.subgraphs]))
         elif isinstance(self.template, dict):
             self._convert_template_to_graph(self.template)
         else:
             AbstractTemplateError('Template must be either list or dict')
+        logger.info('Number of sub graphs: {}'.format(len(self.subgraphs)))
+        logger.info('Number of nodes per sub graph: {}'.format(
+            [sg.number_of_nodes() for sg in self.subgraphs]))
         self._combine_graphs()
 
     def to_dot(self, filename='graph.dot'):

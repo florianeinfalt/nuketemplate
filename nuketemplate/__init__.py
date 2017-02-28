@@ -36,4 +36,15 @@ def create_logger():
     return logger
 
 
+def import_nuke():
+    try:
+        import nuke
+        return nuke
+    except ImportError as e:
+        try:
+            os.environ['NON_PRODUCTION_CONTEXT']
+        except KeyError:
+            raise e
+
+
 logger = create_logger()

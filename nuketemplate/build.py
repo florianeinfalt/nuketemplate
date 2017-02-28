@@ -1,12 +1,12 @@
 import attr
-import nuke
 import networkx as nx
 from nukecontexts import ctx
+from nuketemplate import import_nuke, logger
 
 from .graph import AbstractGraph
 from .exceptions import AbstractGraphError
 
-from nuketemplate import logger
+nuke = import_nuke()
 
 
 @attr.s(repr=False)

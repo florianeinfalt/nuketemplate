@@ -1,9 +1,11 @@
 import attr
-import nuke
 import networkx as nx
 import nukeuuid
+from nuketemplate import import_nuke, logger
 
 from .exceptions import AbstractGraphError
+
+nuke = import_nuke()
 
 
 def is_node_in_nx_graph(instance, attribute, value):

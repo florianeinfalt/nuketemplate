@@ -44,6 +44,14 @@ class NukeGraphBuilder(object):
             node.autoplace()
 
     def _build_node(self, node):
+        """
+        Given a ``node`` name, build the node in Nuke and return the Nuke node.
+
+        :param node: Node name
+        :type node: str
+        :return: Node
+        :rtype: :class:`~nuke.Node`
+        """
         logger.info('Building node: {0}'.format(node))
         nx_graph = self.abstract_graph.nx_graph
 
@@ -62,6 +70,9 @@ class NukeGraphBuilder(object):
         return parent
 
     def build(self):
+        """
+        Build the Nuke node graph from the object's ``abstract_graph``
+        """
         logger.info('Building...')
         self._check_cycles(self.abstract_graph.nx_graph)
         with ctx.inventory('new_nodes'):

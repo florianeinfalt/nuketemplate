@@ -1,3 +1,4 @@
+import attr
 import subprocess
 import networkx as nx
 
@@ -8,6 +9,7 @@ from .exceptions import AbstractTemplateError
 from nuketemplate import logger
 
 
+@attr.s(repr=False)
 class AbstractTemplateConverter(object):
     """
     Template to Graph Converter
@@ -19,12 +21,11 @@ class AbstractTemplateConverter(object):
     :param end: End characters, default: ``<<``
     :type end: str
     """
-    def __init__(self, template, start='>>', end='<<'):
-        self.start = start
-        self.end = end
-        self.template = template
-        self.subgraphs = []
-        self.result = None
+    template = attr.ib()
+    start = attr.ib(default='>>')
+    end = attr.ib(default='<<')
+    subgraphs = attr.ib(default=[])
+    result = attr.ib(default=None)
 
     def _convert_template_to_graph(self, template):
         """
@@ -103,7 +104,8 @@ class AbstractTemplateConverter(object):
             AbstractTemplateError('Template must be either list or dict')
         num_nodes_p_subgraph = [sg.number_of_nodes() for sg in self.subgraphs]
         logger.info('Number of sub graphs: {}'.format(len(self.subgraphs)))
-        logger.info('Number of nodes per sub graph: {}'.format(num_nodes_p_subgraph))
+        logger.info('Number of nodes per sub graph: {}'.format(
+            num_nodes_p_subgraph))
         logger.info('Total number of nodes: {}'.format(
             sum(num_nodes_p_subgraph)))
         self._combine_graphs()
@@ -126,3 +128,6 @@ class AbstractTemplateConverter(object):
         """
         self.to_dot()
         subprocess.call(['dot', '-Tpng', 'graph.dot', '-o', 'graph.png'])
+
+    def __repr__(self):
+        return '<AbstractTemplateConverter: {0}>'.format(self.template)

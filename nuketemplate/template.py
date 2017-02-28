@@ -1,4 +1,5 @@
 import os
+import attr
 import json
 import jinja2
 
@@ -8,6 +9,7 @@ from collections import deque
 from .exceptions import AbstractTemplateError
 
 
+@attr.s(repr=False)
 class AbstractTemplate(object):
     """
     Template class, automates Jinja2 loader and environment generation,
@@ -20,11 +22,10 @@ class AbstractTemplate(object):
     :param attrs: Attribute templates' folder name, (default: ``attrs``)
     :type attrs: str
     """
-    def __init__(self, root, nodes='nodes', attrs='attrs'):
-        self.root = root
-        self.attrs = attrs
-        self.nodes = nodes
-        self.template = []
+    root = attr.ib()
+    attrs = attr.ib(default='attrs')
+    nodes = attr.ib(default='nodes')
+    template = attr.ib(default=[])
 
     def _any(self, iterable, attribute):
         """
@@ -88,7 +89,6 @@ class AbstractTemplate(object):
         while d_args:
             dict_.update(d_args.popleft())
         return dict_
-
 
     def _get_loader(self, folder):
         """
@@ -181,3 +181,6 @@ class AbstractTemplate(object):
             raise AbstractTemplateError('Template does not yet exist')
         with open(filename, 'w') as fp:
             json.dump(self.template, fp, indent=4)
+
+    def __repr__(self):
+        return '<AbstractTemplate: {0}>'.format(self.root)

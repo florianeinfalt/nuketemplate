@@ -3,6 +3,7 @@ import json
 import jinja2
 
 from glob import glob
+from collections import deque
 
 from .exceptions import AbstractTemplateError
 
@@ -71,6 +72,24 @@ class AbstractTemplate(object):
         return [item for item in sorted(filtered_iterable,
                                         key=lambda x: x[sort_key])]
 
+    def _merge_dicts(self, dict_, *args):
+        """
+        Custom Jinja 2 filter, return a dictionary merged with all dictionaries
+        in \*args.
+
+        :param dict_: Parent dictionary
+        :type dict_: dict
+        :param \*args: List of children dictionaries
+        :type \*args: list
+        :return: Merged dictionary
+        :rtype: dict
+        """
+        d_args = deque(args)
+        while d_args:
+            dict_.update(d_args.popleft())
+        return dict_
+
+
     def _get_loader(self, folder):
         """
         Given a ``folder`` containing Jinja2 templates, return a Jinja2 loader
@@ -98,6 +117,7 @@ class AbstractTemplate(object):
         env.filters['any'] = self._any
         env.filters['basename'] = self._basename
         env.filters['filter_sort'] = self._filter_sort
+        env.filters['merge_dicts'] = self._merge_dicts
         return env
 
     def _get_attrs(self):

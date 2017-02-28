@@ -17,10 +17,10 @@ class AbstractTemplate(object):
     :type root: str
     :param nodes: Node templates' folder name, (default: ``nodes``)
     :type nodes: str
-    :param nodes: Attribute templates' folder name, (default: ``attrs``)
-    :type nodes: str
+    :param attrs: Attribute templates' folder name, (default: ``attrs``)
+    :type attrs: str
     """
-    def __init__(self, root=os.getcwd(), nodes='nodes', attrs='attrs'):
+    def __init__(self, root, nodes='nodes', attrs='attrs'):
         self.root = root
         self.attrs = attrs
         self.nodes = nodes
@@ -167,19 +167,17 @@ class AbstractTemplate(object):
             print 'Attribute error: {0}'.format(e)
             raise AbstractTemplateError(e)
 
-    def save(self, root='', name='template.json'):
+    def save(self, filename='template.json'):
         """
-        Given a ``root`` folder and a ``name``, save the template JSON encoded
-        to a file.
+        Given a ``root`` folder and a ``filename``, save the template JSON
+        encoded to a file.
 
         :param root: Saving location
         :type root: str
-        :param name: Filename
-        :type name: str
+        :param filename: Filename
+        :type filename: str
         """
         if not self.template:
             raise AbstractTemplateError('Template does not yet exist')
-        if not root:
-            root = self.root
-        with open('{0}/{1}'.format(root, name), 'w') as fp:
+        with open(filename, 'w') as fp:
             json.dump(self.template, fp, indent=4)

@@ -54,7 +54,7 @@ class AbstractTemplateConverter(object):
         nuke_node = NukeNode(name=node,
                              attr=template[node].get('attr', {}),
                              type=template[node].get('type', {}),
-                             id={})
+                             id=template[node].get('id', {}))
         graph.nx_graph.add_node(nuke_node)
         if not graph.start:
             graph.start = nuke_node

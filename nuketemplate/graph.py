@@ -1,6 +1,7 @@
 import attr
 import nuke
 import networkx as nx
+import nukeuuid
 
 from .exceptions import AbstractGraphError
 
@@ -70,7 +71,7 @@ class NukeNode(GenericNode):
                 self._nuke_node[attr].setValue(str(value))
 
     def _set_id(self):
-        raise NotImplementedError
+        nukeuuid.set(self._nuke_node, **self._id)
 
     def build(self):
         if self._nuke_node:
@@ -78,7 +79,7 @@ class NukeNode(GenericNode):
         self._nuke_node = nuke.createNode(self._type, inpanel=False)
         self._nuke_node['name'].setValue(self.name)
         #self._set_attr()
-        #self._set_id()
+        self._set_id()
         return self._nuke_node
 
     def __repr__(self):

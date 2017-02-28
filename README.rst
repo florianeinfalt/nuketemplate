@@ -15,6 +15,7 @@ nuketemplate
 A toolkit to build Nuke scripts with flexible templates, based on Jinja 2
 
 `Full Documentation`_
+`Getting Started`_
 
 Installation
 ------------
@@ -32,3 +33,4 @@ Open Nuke's ``init.py`` file and add:
     nuke.pluginAddPath('/path/to/your/local/python/site-packages')
 
 .. _Full Documentation: http://nuketemplate.readthedocs.io/en/latest/
+.. _Getting Started: http://nuketemplate.readthedocs.io/en/latest/getting_started.html

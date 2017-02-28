@@ -64,11 +64,13 @@ class NukeNode(GenericNode):
     _nuke_name = attr.ib(default=None, repr=True)
 
     def _set_attr(self):
-        for attr, value in self._attr.iteritems():
+        for attr_, value in self._attr.iteritems():
             try:
-                self._nuke_node[attr].setValue(value)
+                self._nuke_node[attr_].setValue(value)
             except TypeError:
-                self._nuke_node[attr].setValue(str(value))
+                self._nuke_node[attr_].setValue(str(value))
+            except NameError:
+                continue
 
     def _set_id(self):
         nukeuuid.set(self._nuke_node, **self._id)
@@ -78,7 +80,8 @@ class NukeNode(GenericNode):
             raise ValueError('Node already exists')
         self._nuke_node = nuke.createNode(self._type, inpanel=False)
         self._nuke_node['name'].setValue(self.name)
-        #self._set_attr()
+        self._set_attr()
+        self._set_attr()
         self._set_id()
         return self._nuke_node
 

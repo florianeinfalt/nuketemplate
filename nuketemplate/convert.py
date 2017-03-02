@@ -126,8 +126,9 @@ class AbstractTemplateConverter(object):
         :param filename: Filename
         :type filename: str
         """
-        self.to_dot()
-        subprocess.call(['dot', '-Tpng', 'graph.dot', '-o', 'graph.png'])
+        dot_filename = filename.replace('.png', '.dot')
+        self.to_dot(filename=dot_filename)
+        subprocess.call(['dot', '-Tpng', dot_filename, '-o', filename])
 
     def __repr__(self):
         return '<AbstractTemplateConverter: {0}>'.format(self.template)

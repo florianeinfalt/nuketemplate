@@ -3,7 +3,8 @@ from setuptools import setup, find_packages
 with open('README.rst', 'r') as f:
     readme = f.read()
 
-requirements = ['attrs', 'jinja2', 'networkx', 'nukecontexts', 'nukeuuid']
+requirements = ['attrs', 'jinja2', 'networkx', 'nukecontexts', 'nukeuuid',
+                'pydotplus']
 test_requirements = ['pytest', 'pytest-cov',
                      'sphinx', 'sphinx_rtd_theme']
 

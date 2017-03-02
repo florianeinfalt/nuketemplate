@@ -1,0 +1,6 @@
+{
+{% for attr_template in attr_templates %}
+    {% include attr_template | basename %}
+    {% if not loop.last %},{% endif %}
+{% endfor %}
+}

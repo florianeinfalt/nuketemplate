@@ -1,0 +1,20 @@
+{
+    ">>": "__premult__",
+    "__premult__": {
+        "type": "Premult",
+        "inputs": ["__creative__"],
+        "attr": {{ attrs["premult"]["default"] | tojson }}
+    },
+    "__creative__": {
+        "type": "NoOp",
+        "inputs": ["__unpremult__"],
+        "attr": {
+            "label": "Colour corrections and beauty build-up"
+        }
+    },
+    "__unpremult__": {
+        "type": "Unpremult",
+        "inputs": ["<<"],
+        "attr": {{ attrs["premult"]["default"] | tojson }}
+    }
+}

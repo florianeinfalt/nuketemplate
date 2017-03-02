@@ -1,0 +1,109 @@
+{
+    "brand": "Manufacturer",
+    "id": 1000,
+    "model": "Model",
+    "modelyear": 2017,
+    "name": "1000 - MY17 Manufacturer Model",
+    "options": [
+      {
+        "color": true,
+        "name": "Base",
+        "switch": 0,
+        "type": "base"
+      },
+      {
+        "color": true,
+        "name": "Low",
+        "switch": 0,
+        "type": "grade"
+      },
+      {
+        "color": true,
+        "name": "Mid",
+        "switch": 1,
+        "type": "grade"
+      },
+      {
+        "color": true,
+        "name": "High",
+        "switch": 2,
+        "type": "grade"
+      },
+      {
+        "color": false,
+        "name": "16inch",
+        "switch": 0,
+        "type": "wheel"
+      },
+      {
+        "color": false,
+        "name": "17inch",
+        "switch": 1,
+        "type": "wheel"
+      },
+      {
+        "code": "AB-123",
+        "color": false,
+        "default": false,
+        "name": "Blue",
+        "switch": 0,
+        "type": "color"
+      },
+      {
+        "code": "CD-456",
+        "color": false,
+        "default": false,
+        "name": "White",
+        "switch": 1,
+        "type": "color"
+      },
+      {
+        "code": "EF-789",
+        "color": false,
+        "default": false,
+        "name": "Black",
+        "switch": 2,
+        "type": "color"
+      },
+      {
+        "code": "GH-123",
+        "color": false,
+        "default": true,
+        "name": "Metallic",
+        "switch": 3,
+        "type": "color"
+      },
+      {
+        "code": "IJ-456",
+        "color": false,
+        "default": false,
+        "name": "Silver",
+        "switch": 4,
+        "type": "color"
+      },
+      {
+        "code": "KL-789",
+        "color": false,
+        "default": false,
+        "name": "Grey",
+        "switch": 5,
+        "type": "color"
+      },
+      {
+        "code": "MN-123",
+        "color": false,
+        "default": false,
+        "name": "Red",
+        "switch": 6,
+        "type": "color"
+      },
+      {
+        "code": "OP-456",
+        "color": false,
+        "default": false,
+        "name": "Dark Red",
+        "switch": 7,
+        "type": "color"
+      }
+    ]
+  }

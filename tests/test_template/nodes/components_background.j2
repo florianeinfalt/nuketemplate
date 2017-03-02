@@ -1,0 +1,20 @@
+{
+    ">>": "__merge_background__",
+    "__merge_background__": {
+        "type": "Merge2",
+        "inputs": ["<<", "__write_background__"],
+        "attr": {{ attrs["merge"]["under"] | tojson }}
+    },
+    "__write_background__": {
+        "type": "Write",
+        "inputs": ["__dot_background__"],
+        "attr": {{ attrs["output"]["flat"] | tojson }}
+    },
+    "__dot_background__": {
+        "type": "Dot",
+        "inputs": [],
+        "attr": {
+            "label": "Connect to background render"
+        }
+    }
+}

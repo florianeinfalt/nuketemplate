@@ -1,0 +1,20 @@
+{
+    ">>": "__merge_shadow__",
+    "__merge_shadow__": {
+        "type": "Merge2",
+        "inputs": ["<<", "__write_shadow__"],
+        "attr": {{ attrs["merge"]["under"] | tojson }}
+    },
+    "__write_shadow__": {
+        "type": "Write",
+        "inputs": ["__dot_shadow__"],
+        "attr": {{ attrs["output"]["flat"] | tojson }}
+    },
+    "__dot_shadow__": {
+        "type": "Dot",
+        "inputs": [],
+        "attr": {
+            "label": "Connect to shadow render"
+        }
+    }
+}

@@ -1,0 +1,6 @@
+{% for option in options %}
+
+{% include "options_" + option + ".j2" %}
+{% if not loop.last %},{% endif %}
+
+{% endfor %}

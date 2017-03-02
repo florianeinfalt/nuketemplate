@@ -1,0 +1,85 @@
+{
+    ">>": "base_merge",
+    "base_merge": {
+        "type": "Merge2",
+        "inputs": ["<<", "base_channel_create"],
+        "attr": {{ attrs["merge"]["under_all"] | tojson }}
+    },
+    "base_channel_create": {
+        "type": "Copy",
+        "inputs": ["base_alpha_sub", "base_channel_create_dot"],
+        "attr": {{ attrs["copy"]["base"] | tojson }}
+    },
+    "base_alpha_sub": {
+        "type": "ShuffleCopy",
+        "inputs": ["base_switch", "base_alpha_sub_dot"],
+        "attr": {{ attrs["shuffleCopy"]["base_alpha_sub"] | tojson }}
+    },
+    "base_channel_create_dot": {
+        "type": "Dot",
+        "inputs": [],
+        "attr": {{ attrs["dot"]["terminator"] | tojson }}
+    },
+    "base_alpha_sub_dot": {
+        "type": "Dot",
+        "inputs": [],
+        "attr": {{ attrs["dot"]["terminator"] | tojson }}
+    },
+    "base_switch": {
+        "type": "Switch",
+        "inputs": [
+            {% set separate = joiner(",") %}
+            {% for option in api_data | filter_sort('type', 'base', 'switch') %}
+                {{ separate() }}
+                {% if option['color'] %}
+                    "{{ option['name'] + "_color_switch" }}"
+                {% else %}
+                    "{{ option['name'] }}"
+                {% endif %}
+            {% endfor %}
+        ],
+        "attr": {}
+    },
+
+    {% set separate = joiner(",") %}
+    {% for option in api_data | filter_sort('type', 'base', 'switch') %}
+        {{ separate() }}
+        {% if option['color'] %}
+            "{{ option['name'] + "_color_switch" }}": {
+                "type": "Switch",
+                "inputs": [
+                    {% set separate_inner = joiner(",") %}
+                    {% for color in api_data | filter_sort('type', 'color', 'switch') %}
+                        {{ separate_inner() }}
+                        "{{ option['name'] + "_" + color['name'] }}"
+                    {% endfor %}
+                ],
+                "attr": {}
+            }
+        {% else %}
+            "{{ option['name'] }}": {
+                "type": "NoOp",
+                "inputs": [],
+                "attr": {}
+            }
+        {% endif %}
+    {% endfor %}
+
+    {% if api_data | filter_sort('type', 'base', 'switch') | any('color') %}
+    ,
+    {% endif %}
+
+    {% set separate = joiner(",") %}
+    {% for option in api_data | filter_sort('type', 'base', 'switch') %}
+        {% if option['color'] %}
+            {% for color in api_data | filter_sort('type', 'color', 'switch') %}
+                {{ separate() }}
+                "{{ option['name'] + "_" + color['name'] }}": {
+                    "type": "NoOp",
+                    "inputs": [],
+                    "attr": {}
+                    }
+            {% endfor %}
+        {% endif %}
+    {% endfor %}
+}

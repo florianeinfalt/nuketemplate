@@ -1,0 +1,6 @@
+{% for component in components %}
+
+{% include "components_" + component + ".j2" %}
+{% if not loop.last %},{% endif %}
+
+{% endfor %}

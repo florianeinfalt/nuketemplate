@@ -1,0 +1,15 @@
+{
+    ">>": "__merge_windows__",
+    "__merge_windows__": {
+        "type": "Merge2",
+        "inputs": ["<<", "__dot_windows__"],
+        "attr": {{ attrs["merge"]["over"] | tojson }}
+    },
+    "__dot_windows__": {
+        "type": "Dot",
+        "inputs": [],
+        "attr": {
+            "label": "Connect to windows render"
+        }
+    }
+}

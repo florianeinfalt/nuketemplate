@@ -1,0 +1,20 @@
+{
+    ">>": "__render__",
+    "__render__": {
+        "type": "Write",
+        "inputs": ["__cutout__"],
+        "attr": {{ attrs["output"]["layered"] | tojson }},
+        "id": {{ dict() | merge_dicts(uuid["render"],
+                                      uuid["types"]["Write"]) | tojson }}
+    },
+    "__cutout__": {
+        "type": "Premult",
+        "inputs": ["__alpha__"],
+        "attr": {{ attrs["premult"]["disabled"] | tojson }}
+    },
+    "__alpha__": {
+        "type": "Shuffle",
+        "inputs": ["<<"],
+        "attr": {{ attrs["shuffle"]["default"] | tojson }}
+    }
+}

@@ -3,6 +3,8 @@ import os
 import json
 import pytest
 
+from collections import deque
+
 from nuketemplate.template import AbstractTemplate
 
 
@@ -41,3 +43,28 @@ def template(template_data):
                                 os.path.dirname(__file__),
                                 'test_template'))
     return template
+
+
+@pytest.fixture(scope='session')
+def node_types():
+    types = deque([
+        ('Write', [('file_type', 'png'),
+                   ('datatype', '8 bit'),
+                   ('colorspace', 'sRGB')]),
+        ('Premult', [('disable', True)]),
+        ('Shuffle', []),
+        ('Merge2', [('operation', 'under')]),
+        ('Merge2', [('operation', 'under')]),
+        ('Merge2', [('operation', 'over')]),
+        ('Merge2', [('operation', 'over')]),
+        ('Premult', []),
+        ('NoOp', []),
+        ('Unpremult', []),
+        ('Merge2', [('operation', 'under'),
+                    ('also_merge', 'all')]),
+        ('Merge2', [('operation', 'under'),
+                    ('also_merge', 'all')]),
+        ('Merge2', [('operation', 'under'),
+                    ('also_merge', 'all')])
+    ])
+    return types

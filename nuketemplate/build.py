@@ -72,7 +72,10 @@ class NukeGraphBuilder(object):
 
     def build(self):
         """
-        Build the Nuke node graph from the object's ``abstract_graph``
+        Build the Nuke node graph from the object's ``abstract_graph``.
+
+        :return: Number of nodes built
+        :rtype: int
         """
         logger.info('Building...')
         self._check_cycles(self.abstract_graph.nx_graph)
@@ -80,6 +83,7 @@ class NukeGraphBuilder(object):
             self._build_node(self.abstract_graph.start)
         self._autoplace(new_nodes)
         logger.info('Total number of nodes built: {}'.format(len(new_nodes)))
+        return len(new_nodes)
 
     def __repr__(self):
         return '<NukeGraphBuilder: {0}>'.format(self.abstract_graph)

@@ -157,7 +157,7 @@ With the templates in place, start Nuke and import the following
     from nuketemplate.convert import AbstractTemplateConverter
     from nuketemplate.build import NukeGraphBuilder
 
-Initialise an :class:`~nuketemplate.temnplate.AbstractTemplate` like so:
+Initialise an :class:`~nuketemplate.template.AbstractTemplate` like so:
 
 .. code-block:: python
 

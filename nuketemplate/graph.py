@@ -81,7 +81,7 @@ class NukeNode(GenericNode):
         """
         Set the ``_nuke_node`` UUID(s) from the object's ``_id`` dict.
         """
-        nukeuuid.set(self._nuke_node, **self._id)
+        nukeuuid.set_uuid(self._nuke_node, **self._id)
 
     def build(self):
         """

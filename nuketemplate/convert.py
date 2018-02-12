@@ -110,25 +110,33 @@ class AbstractTemplateConverter(object):
             sum(num_nodes_p_subgraph)))
         self._combine_graphs()
 
-    def to_dot(self, filename='graph.dot'):
+    def to_dot(self, dot_filename='graph.dot'):
         """
-        Save the converted graph to a dot file at location ``filename``
+        Save the converted graph to a dot file at location ``dot_filename``
 
-        :param filename: Filename
-        :type filename: str
+        :param dot_filename: Filename, default: ``graph.dot``
+        :type dot_filename: str
         """
-        nx.drawing.nx_pydot.write_dot(self.result.nx_graph, filename)
+        nx.drawing.nx_pydot.write_dot(self.result.nx_graph, dot_filename)
 
-    def to_png(self, filename='graph.png'):
+    def to_png(self, png_filename='graph.png',
+               dot_executable='/usr/local/bin/dot'):
         """
-        Save the converted graph to a png file at location ``filename``
+        Save the converted graph to a png file at location ``png_filename``
 
-        :param filename: Filename
-        :type filename: str
+        :param png_filename: Filename, default: ``graph.png``
+        :type png_filename: str
+        :param dot_executable: Path to the dot executable,
+                               default: ``/usr/local/bin/dot``
+        :type dot_executable: str
         """
-        dot_filename = filename.replace('.png', '.dot')
-        self.to_dot(filename=dot_filename)
-        subprocess.call(['dot', '-Tpng', dot_filename, '-o', filename])
+        dot_filename = png_filename.replace('.png', '.dot')
+        self.to_dot(dot_filename=dot_filename)
+        subprocess.check_call([
+            '{dot_executable} -Tpng {dot_filename} -o {png_filename}'.format(
+                dot_executable=dot_executable,
+                dot_filename=dot_filename,
+                png_filename=png_filename)], shell=True)
 
     def __repr__(self):
         return '<AbstractTemplateConverter: {0}>'.format(self.template)

@@ -57,7 +57,10 @@ class NukeGraphBuilder(object):
 
         for selected_node in nuke.selectedNodes():
             selected_node.setSelected(False)
-        parent = node.build()
+        if nuke.toNode(node.name) is None:
+            parent = node.build()
+        else:
+            parent = nuke.toNode(node.name)
         assert parent
         inputs = [edge for edge in nx_graph.edges(data=True)
                   if edge[0] == node]

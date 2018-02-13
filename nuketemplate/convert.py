@@ -117,6 +117,10 @@ class AbstractTemplateConverter(object):
         :param dot_filename: Filename, default: ``graph.dot``
         :type dot_filename: str
         """
+        if not self.result:
+            raise AbstractTemplateError(
+                'Output to the .dot format only works with a converted '
+                'template, please run convert() first.')
         nx.drawing.nx_pydot.write_dot(self.result.nx_graph, dot_filename)
 
     def to_png(self, png_filename='graph.png',

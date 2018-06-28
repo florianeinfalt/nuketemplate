@@ -1,3 +1,4 @@
+import copy
 import attr
 import subprocess
 import networkx as nx
@@ -56,20 +57,20 @@ class AbstractTemplateConverter(object):
                              attr=template[node].get('attr', {}),
                              type=template[node].get('type', {}),
                              id=template[node].get('id', {}))
-        graph.nx_graph.add_node(nuke_node)
+        graph.nx_graph.add_node(nuke_node.name, node=nuke_node)
         if not graph.start:
-            graph.start = nuke_node
+            graph.start = nuke_node.name
         for input_idx, input in enumerate(template[node]['inputs']):
             if input != self.end:
-                graph.nx_graph.add_edge(nuke_node,
+                graph.nx_graph.add_edge(nuke_node.name,
                                         self._add_nodes(graph,
                                                         input,
                                                         template),
                                         input=input_idx)
             else:
-                graph.end = nuke_node
+                graph.end = nuke_node.name
                 graph.end_slot = input_idx
-        return nuke_node
+        return nuke_node.name
 
     def _combine_graphs(self):
         """
@@ -121,7 +122,10 @@ class AbstractTemplateConverter(object):
             raise AbstractTemplateError(
                 'Output to the .dot format only works with a converted '
                 'template, please run convert() first.')
-        nx.drawing.nx_pydot.write_dot(self.result.nx_graph, dot_filename)
+        graph = copy.deepcopy(self.result.nx_graph)
+        for node in graph.nodes():
+            del graph.nodes()[node]['node']
+        nx.drawing.nx_pydot.write_dot(graph, dot_filename)
 
     def to_png(self, png_filename='graph.png',
                dot_executable='/usr/local/bin/dot'):

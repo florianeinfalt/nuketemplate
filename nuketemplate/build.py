@@ -43,7 +43,7 @@ class NukeGraphBuilder(object):
         for node in nodes:
             node.autoplace()
 
-    def _build_node(self, node):
+    def _build_node(self, node_name):
         """
         Given a ``node`` name, build the node in Nuke and return the Nuke node.
 
@@ -52,24 +52,25 @@ class NukeGraphBuilder(object):
         :return: Node
         :rtype: :class:`~nuke.Node`
         """
-        logger.info('Building node: {0}'.format(node))
+        logger.info('Building node: {0}'.format(node_name))
         nx_graph = self.abstract_graph.nx_graph
 
         for selected_node in nuke.selectedNodes():
             selected_node.setSelected(False)
-        if nuke.toNode(node.name) is None:
+        node = self.abstract_graph.nx_graph.nodes()[node_name]['node']
+        if nuke.toNode(node_name) is None:
             parent = node.build()
         else:
-            parent = nuke.toNode(node.name)
+            parent = nuke.toNode(node_name)
         assert parent
         inputs = [edge for edge in nx_graph.edges(data=True)
-                  if edge[0] == node]
+                  if edge[0] == node_name]
         for input in inputs:
             child = self._build_node(input[1])
             logger.info('{0} >> {1} >> {2}'.format(
                 input[1],
                 input[2]['input'],
-                node))
+                node_name))
             parent.setInput(input[2]['input'], child)
         return parent
 

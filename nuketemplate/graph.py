@@ -37,7 +37,7 @@ class GenericNode(object):
     name = attr.ib()
 
     def __repr__(self):
-        return '<GenericNode: {0}>'.format(self.name)
+        return 'GenericNode({0})'.format(self.name)
 
 
 @attr.s(repr=False)
@@ -100,7 +100,7 @@ class NukeNode(GenericNode):
         return self._nuke_node
 
     def __repr__(self):
-        return '<NukeNode: {0}>'.format(self.name)
+        return 'NukeNode({0})'.format(self.name)
 
 
 @attr.s

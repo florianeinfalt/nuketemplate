@@ -18,7 +18,7 @@ except:
     if not match:
         raise RuntimeError('Import nuketemplate from within Nuke')
 
-__version__ = '0.1.2'
+__version__ = '0.2.0'
 __all__ = []
 
 
